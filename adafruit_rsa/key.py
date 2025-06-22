@@ -268,12 +268,15 @@ class PublicKey(AbstractKey):
         except ImportError as err:
             raise ImportError("This functionality requires the  library") from err
         try:
-            from rsa.asn1 import AsnPubKey
-        except ImportError as err:
-            raise ImportError(
-                "This functionality requres the CPython rsa library, "
-                "not available in CircuitPython"
-            ) from err
+            from adafruit_rsa.asn1 import AsnPubKey
+        except ImportError as er:
+            try:
+                from rsa.asn1 import AsnPubKey
+            except ImportError as err:
+                raise ImportError(
+                    "This functionality requres the CPython rsa library, "
+                    "not available in CircuitPython"
+                ) from err
 
         # Create the ASN object
         asn_key = AsnPubKey()
